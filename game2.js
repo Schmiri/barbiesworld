@@ -36,7 +36,8 @@ var GameState = {
 		this.bird = game.add.sprite(20, 120, 'bird');
 		this.bird.anchor.setTo(0.5, 0.5);
 		this.bird.scale.setTo(0.5,0.5);
-		game.physics.enable(bird, Phaser.Physics.ARCADE);
+		game.physics.enable(this.bird, Phaser.Physics.ARCADE);
+		game.physics.arcade.enable(this.player);
 		
 		/*this.heli.animations.add('run');
     	this.heli.animations.play('run', 100, true);
@@ -55,25 +56,42 @@ var GameState = {
     		this.bird.x -= 2;
     	};*/
     	if (this.heli.x > this.game.world.centerX) {
-				this.heli.x -= 4;
-				this.player.x -= 4;
-				
+			this.heli.x -= 4;
+			this.player.x -= 4;				
 		};
+
+		/* old without jump
 		if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
-				this.player.y -= 10;
-				if (this.player.y == 0) {
+			this.player.y -= 10;
+			if (this.player.y == 0) {
 				this.player.y += 4;
-		}
+			}
 		};
+		*/
+		if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
+			this.player.y -= 10;
+			console.log("hu");
+			if(this.player.y >= 0){
+				this.player.body.velocity.y += 20;
+				console.log("test");
+				console.log(this.game.world.centerY);
+			}			
+		};
+
+		// wenn player bei 20 -> hält er an
+		if(this.player.body.velocity.y >= 20 && this.player.y >= 500){
+			
+			this.player.body.velocity.y = 0;
+		}
 		
 		
 		//var birdFly = this.bird.x + 20;
 
 		if (this.bird.x < this.game.world.centerX-200) {
-				this.bird.x += 2;
+			this.bird.x += 2;
 		};
-		this.bird.scale.setTo(-0.5,0.5);
-		
+
+		this.bird.scale.setTo(-0.5,0.5);		
 	}
 };
 
