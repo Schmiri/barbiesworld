@@ -70,17 +70,21 @@ var GameState = {
 		*/
 		if (game.input.keyboard.isDown(Phaser.Keyboard.UP)) {
 			this.player.y -= 10;
-			console.log("hu");
 			if(this.player.y >= 0){
 				this.player.body.velocity.y += 20;
-				console.log("test");
-				console.log(this.game.world.centerY);
 			}			
+
 		};
 
-		// wenn player bei 20 -> hält er an
-		if(this.player.body.velocity.y >= 20 && this.player.y >= 500){
-			
+		if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {
+				this.player.x -= 20;
+		};
+		if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {
+				this.player.x += 20;
+		};
+
+		// wenn player bei 500 -> hält er an -> dann fallschirm öffnen
+		if(this.player.body.velocity.y >= 20 && this.player.y >= 500){			
 			this.player.body.velocity.y = 0;
 		}
 		
@@ -94,7 +98,6 @@ var GameState = {
 		this.bird.scale.setTo(-0.5,0.5);		
 	}
 };
-
 
 game.state.add('GameState', GameState);
 game.state.start('GameState');
