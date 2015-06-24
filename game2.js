@@ -1,16 +1,11 @@
-
 /*var GameState = {
 	preload: function() {
 		load.image('ground', 'assets/ground.png');
 	},
-
-
 	create: function() {
 		game.add.sprite(0, 0, 'ground');
 	},
-
 	update: function() {
-
 	},
 };*/
 var game = new Phaser.Game(1024, 1200, Phaser.AUTO);
