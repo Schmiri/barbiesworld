@@ -1,19 +1,67 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<script src="phaser.min.js"></script>     	
+		<script src="phaser.min.js"></script>   
+      <script type="text/javascript">
+        WebFontConfig = {
+          google: { families: [ 'Amatic+SC::latin' ] }
+        };
+        (function() {
+          var wf = document.createElement('script');
+          wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+            '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+          wf.type = 'text/javascript';
+          wf.async = 'true';
+          var s = document.getElementsByTagName('script')[0];
+          s.parentNode.insertBefore(wf, s);
+        })();
+      </script>
+      <link href='http://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>
      	<style type="text/css">
+      @import url(http://fonts.googleapis.com/css?family=Amatic+SC);
      	body {
      		padding: 0;
      		margin: 0;
      		background: #9EDEF2;
+        font-family: 'Amatic SC', cursive;
      	}
+          h1 {
+               margin-top:150px;
+               margin-bottom:20px;
+               font-size: 60px;
+          }
+          #start {
+               
+          }
+          .btn {
+                 -webkit-border-radius: 0;
+                 -moz-border-radius: 0;
+                 border-radius: 0px;
+                 border: rgb(12, 150, 205) 1px solid;
+                 font-family: 'Amatic SC', cursive;
+                 color: rgb(12, 150, 205);
+                 background-color: rgba(255, 255, 255, 0.1);
+                 font-size: 30px;
+                 padding: 15px 70px 15px 70px;
+                 text-decoration: none;
+                 margin:10px;
+                 width: 350px;
+               }
+
+               .btn:hover {
+                 background-color: rgba(255, 255, 255, 0.3);
+                 text-decoration: none;
+               }
      	</style>
 	</head>
-	<body>
-          <!--
-               <script src="game2.js"></script>
-          -->
-          <script src="game.js"></script>
+	<body width="100%" onLoad="window.resizeTo(1024,630)">
+          <div id="start" align="center" style="vertical-align:center;" >
+          <h1>Fly high</h1>
+          <button class="btn" onclick="playGame();this.parentNode.style.display = 'none';">Spiel starten</button>
+          <script src="game.js"></script>  
+          </br>
+          <button class="btn" onclick="">Tutorial</button>
+          <!-- <script src="game.js"></script>   -->
+          </div>
 	</body>
 </html>
