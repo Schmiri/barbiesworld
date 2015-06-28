@@ -4,43 +4,62 @@
 function playGame() {
 
     var game = new Phaser.Game(1024, 630, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
+    //  The Google WebFont Loader will look for this object, so create it before loading the script.
+    WebFontConfig = {
 
+        //  'active' means all requested fonts have finished loading
+        //  We set a 1 second delay before calling 'createText'.
+        //  For some reason if we don't the browser cannot render the text the first time it's created.
+        active: function() { game.time.events.add(Phaser.Timer.SECOND, createText, this); },
+
+        //  The Google Fonts we want to load (specify as many as you like in the array)
+        google: {
+          families: [ 'Amatic+SC::latin' ]
+        }
+
+    };
     function preload() 
     {
         //  Load the Google WebFont Loader script
         game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
-
         game.load.image('ground', 'assets/ground.png');
-        game.load.image('bird', 'assets/bird.png');
-        game.load.spritesheet('dude', 'assets/player2.png', 275, 315, 3);
+        game.load.spritesheet('dude', 'assets/player3.png', 275, 315, 4);
         game.load.image('heli', 'assets/helicopter.png');
-        game.load.spritesheet('bird', 'assets/bird.png', 73, 51, 4)
+        game.load.spritesheet('bird', 'assets/birdi.png', 72, 51, 4)
         game.load.image('star', 'assets/star.png');
-    // ToDo: Bild aus AI neu abspeichern (groesser)
-        game.load.image('cloud', 'assets/cloud2.png');
+        game.load.image('cloud', 'assets/cloud.png');
     }
 
-    // anzahl der Weltgroesse/ Sprunghöhe (aendert sich im level)
+    // anzahl der Weltgroesse/ Sprunghöhe (erhoeht sich im level)
     var worldHeight = 3000;
     var player; 
-    // Fallgeschwindigkeit des Players (aendert sich im level)
+    // Fallgeschwindigkeit des Players (erhoeht sich im level)
     var playerGravity = 250;
     var fallschirmOffen = false; 
     var heli;
     var clouds;
     var birds;
-    // anzahl der voegel (aendert sich im level)
-    var birdLevel = 3;
-    var birddirection = 200;
-    var birdMove =true;
+    var reverseEnemyTriggers
+    // anzahl der voegel (erhoeht sich im level)
+    var birdCount = 3;
     var stars;
-    // anzahl der sterne (aendert sich im level)
-    var starlevel = 4;
+    // anzahl der sterne (erhoeht sich im level)
+    var starCount = 4;
 
+    var textSprite;
+    var level = 1;
+    var levelText;
     var cursors;
     var score = 0;
     var scoreText;
+    var lifes = 3;
+    var lifesText;
     var moveCamera=true;
+
+    var high = 550;
+    var meter = 8;
+    var text = null;
+    var grd;
 
     function create() 
     {
@@ -68,7 +87,7 @@ function playGame() {
         stars.enableBody = true;
 
         //  Here we'll create 12 of them evenly spaced apart
-        for (var i = 0; i < starlevel; i++)
+        for (var i = 0; i < starCount; i++)
         {
             //  Create a star inside of the 'stars' group
             var star = stars.create(i * Math.random()*500+100, i * Math.random()*700+700, 'star');
@@ -84,10 +103,11 @@ function playGame() {
         player = game.add.sprite(game.world.width+390, 0, 'dude');
 
         //player sprite wird verschoben
-        player.animations.add('up', [0, 1], 3, true);
-        player.animations.add('left', [1, 0], 3, true);
-        player.animations.add('right', [1, 0], 3, true);
-        player.animations.add('down', [2], 3, true);
+        player.animations.add('left', [1], 4, true);
+        player.animations.add('right', [1], 4, true);
+        player.animations.add('down', [2], 4, true);
+        player.animations.add('dead', [3], 4, true);
+        player.animations.add('up', [0], 4, true);
 
         //  We need to enable physics on the player
         game.physics.arcade.enable(player);
@@ -99,130 +119,116 @@ function playGame() {
         birds = game.add.group();
         game.physics.arcade.enable(birds);
         birds.enableBody = true;
+        birds.physicsBodyType = Phaser.Physics.ARCADE;
 
-        //  Here we'll create 3 left of them evenly spaced apart
-        for (var i = 0; i < birdLevel; i++)
+
+        for (var i = 0; i < birdCount; i++)
         {
-            //  Create a star inside of the 'stars' group
-            var bird = birds.create(10, i * Math.random() *600 + 600, 'bird');
-            //bird sprite wird verschoben
-            bird.animations.add('right', [0, 1], 4, true);
-            bird.animations.add('left', [2, 3], 4, true);
-
-    // ToDo: Bird kehrt nicht in der mitte der Welt um sondern fliegt durch 
-            //bird.body.velocity.x = 0;
-            bird.body.velocity.x = birddirection;
-
-            if (bird.body.x>=game.world.centerX)
-            {
-                birddirection = -200;
-                bird.animations.play('left');
-            }
-            else if (bird.body.x<=20)
-            {
-                birddirection = 200;
-                bird.animations.play('right');
-            } 
-            
+            //  Create the birds
+            var bird = birds.create(0, i * Math.random() *600 + 600, 'bird', 0);
+            bird.body.velocity.x = 50;
         }
+        birds.callAll('animations.add', 'animations', 'right', [0, 1], 4, true);
+        birds.callAll('animations.add', 'animations', 'left', [2, 3], 4, true);
+ 
+        
+        //  And play them
+        birds.callAll('animations.play', 'animations', 'right');
+        
 
         game.camera.follow(player);
 
+        var style = { font: "55px", fill: "#0C96CD"};
         //  The score
     // ToDo: der Score ist momentan noch fest prositioniert - soll aber dem Player folgen
-        scoreText = game.add.text(16, 16, 'score: 0', { families: [ 'Amatic+SC::latin' ], fontSize: '64px', fill: '#000' });
-         
+        
+
         //  Our controls.
         cursors = game.input.keyboard.createCursorKeys();
 
+    }
+    function createText() {
+        text = game.add.text(0,0, 'Level: ' + level + '       Sterne: ' + score + '       Leben: ' + lifes);
+
+        text.font = 'Amatic SC';
+        text.fontSize = 30;
+
+        textSprite = game.add.sprite(15, 20, null);
+        textSprite.addChild(text);
+
+        game.physics.enable(textSprite, Phaser.Physics.ARCADE);
+        textSprite.body.gravity.y = 0;
+
+         for (var i = 1; i < 6; i++)
+        {
+            var highText = game.add.text(950, game.world.height-high, ' ' + meter*i + ' m');
+            high += 500;
+            highText.font = 'Amatic SC';
+            highText.fontSize = 50;
+         }
     }
 
     function update() 
     {
        //  Reset the players velocity (movement)
         player.body.velocity.x = 0;
-        
         // Bounding-Box settings
         player.body.setSize(65, 150, 137, 161);
 
+        player.animations.play('up');
+
         //bei start kommt heli mit dude reingeflogen    
-        if (heli.x > game.world.centerX-200) 
+        if (heli.x > game.world.centerX-270) 
         {
-            //geschwindigkeit und position   
+            //geschwindigkeit und position     
             heli.x -= 4;
-            player.x -= 4;           
+            player.x -= 4;
         }
         
         //Player springt los, erst wenn der heli angekommen ist
         if (cursors.down.isDown && heli.x<=game.world.centerX-200)
-        {
+        { 
             //  Player physics properties. Give the little guy a slight bounce.
-            player.body.bounce.y = 0.1;
+            if (fallschirmOffen == true) {
+                player.body.bounce.y = 0.1;
+            }
             player.body.gravity.y = playerGravity;
             player.body.collideWorldBounds = true;
-            player.frame = 3;
+            textSprite.body.gravity.y = playerGravity;
         }
-
-        // bird fliegen lassen
-        /*if (bird.body.x>=game.world.centerX)
-        {
-            birddirection = -200;
-            bird.animations.play('left');
-        }
-        else if (bird.body.x<=20)
-        {
-            birddirection = 200;
-            bird.animations.play('right');
-        } 
-        bird.body.velocity.x = birddirection;*/
-
-        // bird fliegen lassen
-        
 
         //cursor bewegen, wenn er gefallen ist
         if (cursors.left.isDown && player.body.gravity.y == playerGravity)
         {
             //  Move to the left
-            player.body.velocity.x = -250;
+            player.body.velocity.x = -300;
             player.animations.play('left');
         }
         else if (cursors.right.isDown && player.body.gravity.y == playerGravity)
         {
             //  Move to the right
-            player.body.velocity.x = 250;
+            player.body.velocity.x = 300;
             player.animations.play('right');
-        }
-        else
-        {
-            //  Stand still
-            player.animations.stop();
-            player.frame = 3;
         }
 
         // Fallschirm oeffnen sobald Ground sichtbar ist
         if (cursors.up.isDown && player.body.y >= game.world.height-600)
         {
+            textSprite.body.gravity.y = 0;
             player.body.velocity.y = 180;
             player.animations.play('down');
-            game.add.text(game.world.centerX, game.world.height-500, 'Gewonnen', { fontSize: '64px', fill: '#000' });
             fallschirmOffen = true; 
         } 
-        else if (player.body.y >= game.world.height-120 && fallschirmOffen == false) {
-// hier kommt zusaetzlich noch ein plattes totes maennchen ;)
-            game.add.text(game.world.centerX, game.world.height-500, 'Tot', { fontSize: '64px', fill: '#000' });
-        }
-
-        if ((cursors.left.isDown || cursors.right.isDown) && player.body.y >= game.world.height-200 && fallschirmOffen == true)
-        {
-            player.animations.play('down');
-        } 
-        else
-        {
-            //  Stand still
+        else if (fallschirmOffen == false && player.body.y >= game.world.height-150) {
+            textSprite.body.gravity.y = 0;
             player.animations.stop();
             player.frame = 3;
         }
-        
+
+        if (fallschirmOffen == true)
+        {
+            player.animations.play('down');
+        }        
 
         if (game.camera.view.y<2400 && moveCamera==true)
         {
@@ -250,15 +256,25 @@ function playGame() {
         // Removes the star from the screen
         star.kill();
 
-        //  Add and update the score
-        score += 10;
-        scoreText.text = 'Score: ' + score;
+        //  Add and update the starScore
+        score += 1;
+        scoreText.text = 'Sterne: ' + score;
+        for (var i = 1; i < 10; i++)
+        {
+            if (score >=3*i) {
+                lifes += 1;
+                lifesText.text = 'Leben: ' + lifes;
+            }
+        }
     }
 
     function collideBird (player, birds) 
     {
         // Removes the player from the screen
-        player.kill();
-        game.add.text(game.world.centerX, player.body.y+300, 'Tot', { fontSize: '64px', fill: '#000' });
+        player.animations.play('dead');
+        game.time.events.add(250, function() {
+            player.kill();
+            birds.kill();
+        })
     }
 }
