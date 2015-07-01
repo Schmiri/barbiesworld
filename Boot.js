@@ -15,6 +15,7 @@ BasicGame.Boot = function (game) {
         var meter;        
         var birdCount;
         var starCount;
+        var cloudCount;
         var lifes;
         var level;
         var score;
@@ -25,6 +26,9 @@ BasicGame.Boot = function (game) {
         var playerGravity;
         var textSprite;
         var text;
+        var counter;
+        var highText;
+        var headline;
 
 };
 
@@ -64,6 +68,20 @@ BasicGame.Boot.prototype = {
     },
 
     create: function () {
+
+        WebFontConfig = {
+
+            //  'active' means all requested fonts have finished loading
+            //  We set a 1 second delay before calling 'createText'.
+            //  For some reason if we don't the browser cannot render the text the first time it's created.
+            active: function() { this.time.events.add(Phaser.Timer.SECOND, this.createText, this); },
+
+            //  The Google Fonts we want to load (specify as many as you like in the array)
+            google: {
+              families: [ 'Loved by the King' ] 
+            }
+        },
+
         BasicGame.started = true;
         BasicGame.newLevel = false;
         BasicGame.high = 550;
@@ -71,13 +89,17 @@ BasicGame.Boot.prototype = {
         BasicGame.meter = 6;        
         BasicGame.birdCount = 3;
         BasicGame.starCount = 4;
+        BasicGame.cloudCount = 20;
         BasicGame.lifes = 3;
         BasicGame.level = 1;
         BasicGame.score = 0;
-        BasicGame.playerGravity = 250;
+        BasicGame.playerGravity = 240;
         BasicGame.fallschirmOffen = false; 
         BasicGame.moveCamera=true;
-        BasicGame.playerAlive = true;  
+        BasicGame.playerAlive = true; 
+        BasicGame.counter = 1; 
+        BasicGame.highText;
+        BasicGame.headline;
 
         //  By this point the preloader assets have loaded to the cache, we've set the game settings
         //  So now let's start the real preloader going

@@ -21,25 +21,14 @@ BasicGame.Game = function (game) {
 
 
 
-    /*WebFontConfig = {
 
-        //  'active' means all requested fonts have finished loading
-        //  We set a 1 second delay before calling 'createText'.
-        //  For some reason if we don't the browser cannot render the text the first time it's created.
-        active: function() { this.time.events.add(Phaser.Timer.SECOND, createText, this); },
-
-        //  The Google Fonts we want to load (specify as many as you like in the array)
-        google: {
-          families: [ 'Loved by the King' ] 
-        }
-
-      }; */
 };
 
 BasicGame.Game.prototype = {
 
     create: function () {
 
+        
 
         this.world.setBounds(0 ,0, 1024, BasicGame.worldHeight);
 
@@ -50,13 +39,11 @@ BasicGame.Game.prototype = {
         clouds = this.add.group();
 
         //  Here we'll create some clouds
-        for (var i = 0; i < 15; i++)
+        for (var i = 0; i < BasicGame.cloudCount; i++)
         {
             //  Create a cloud inside of the 'clouds' group
-            var cloud = clouds.create(i * Math.random()*550+100, i * Math.random()*880+600, 'cloud');
+            var cloud = clouds.create(i * Math.random()*170+100, i * Math.random()*480+500, 'cloud');
         }
-
-        this.createText();
 
         //  Some stars to collect
         stars = this.add.group();
@@ -77,6 +64,9 @@ BasicGame.Game.prototype = {
         //set heli außerhalb vom spielfeld (rechts)
         heli = this.add.sprite(this.world.width+300, 60, 'heli');
 
+        // Levels, Stars and Lifes, high in meter as well
+        this.createText();
+
         // The player and its settings
         player = this.add.sprite(this.world.width+390, 0, 'dude');
         player.enableBody = true;
@@ -95,8 +85,6 @@ BasicGame.Game.prototype = {
         birds = this.add.group();
         this.physics.arcade.enable(birds);
         birds.enableBody = true;
-        birds.physicsBodyType = Phaser.Physics.ARCADE;
-
 
         for (var i = 0; i < BasicGame.birdCount; i++)
         {
@@ -122,18 +110,18 @@ BasicGame.Game.prototype = {
 
         BasicGame.text = this.add.text(15,20, 'Level: ' + BasicGame.level + '      Sterne: ' + BasicGame.score + '      Leben: ' + BasicGame.lifes);
 
-        //text.font = 'Loved by the King';
+        BasicGame.text.font = 'Loved by the King';
         BasicGame.text.fontSize = 30;
         BasicGame.text.padding.set(10, 16);
         BasicGame.text.fixedToCamera = true;
         
          for (var i = 1; i < BasicGame.meter; i++)
         {
-            var highText = this.add.text(935, this.world.height-BasicGame.high, '_' + 8*i + 'm');
+            BasicGame.highText = this.add.text(935, this.world.height-BasicGame.high, '_' + 8*i + 'm');
             BasicGame.high += 500;
-            //highText.font = 'Loved by the King';
-            highText.fontSize = 50;
-            highText.padding.set(10, 16);
+            BasicGame.highText.font = 'Loved by the King';
+            BasicGame.highText.fontSize = 50;
+            BasicGame.highText.padding.set(10, 16);
          }
     },
 
