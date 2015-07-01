@@ -1,77 +1,53 @@
+BasicGame.Game = function (game) {
+
+    //  When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
+
+    this.game;      //  a reference to the currently running game (Phaser.Game)
+    this.add;       //  used to add sprites, text, groups, etc (Phaser.GameObjectFactory)
+    this.camera;    //  a reference to the game camera (Phaser.Camera)
+    this.cache;     //  the game cache (Phaser.Cache)
+    this.input;     //  the global input manager. You can access this.input.keyboard, this.input.mouse, as well from it. (Phaser.Input)
+    this.load;      //  for preloading assets (Phaser.Loader)
+    this.math;      //  lots of useful common math operations (Phaser.Math)
+    this.sound;     //  the sound manager - add a sound, play one, set-up markers, etc (Phaser.SoundManager)
+    this.stage;     //  the game stage (Phaser.Stage)
+    this.time;      //  the clock (Phaser.Time)
+    this.tweens;    //  the tween manager (Phaser.TweenManager)
+    this.state;     //  the state manager (Phaser.StateManager)
+    this.world;     //  the game world (Phaser.World)
+    this.particles; //  the particle manager (Phaser.Particles)
+    this.physics;   //  the physics manager (Phaser.Physics)
+    this.rnd;       //  the repeatable random number generator (Phaser.RandomDataGenerator)
 
 
 
-function playGame() {
-
-    var game = new Phaser.Game(1024, 630, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
-    //  The Google WebFont Loader will look for this object, so create it before loading the script.
-    WebFontConfig = {
+    /*WebFontConfig = {
 
         //  'active' means all requested fonts have finished loading
         //  We set a 1 second delay before calling 'createText'.
         //  For some reason if we don't the browser cannot render the text the first time it's created.
-        active: function() { game.time.events.add(Phaser.Timer.SECOND, createText, this); },
+        active: function() { this.time.events.add(Phaser.Timer.SECOND, createText, this); },
 
         //  The Google Fonts we want to load (specify as many as you like in the array)
         google: {
-          families: [ 'Amatic+SC::latin' ]
+          families: [ 'Loved by the King' ] 
         }
 
-    };
-    function preload() 
-    {
-        //  Load the Google WebFont Loader script
-        game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
-        game.load.image('ground', 'assets/ground.png');
-        game.load.spritesheet('dude', 'assets/player3.png', 275, 315, 4);
-        game.load.image('heli', 'assets/helicopter.png');
-        game.load.spritesheet('bird', 'assets/birdi.png', 72, 51, 4)
-        game.load.image('star', 'assets/star.png');
-        game.load.image('cloud', 'assets/cloud.png');
-    }
+      }; */
+};
 
-    // anzahl der Weltgroesse/ Sprunghöhe (erhoeht sich im level)
-    var worldHeight = 3000;
-    var player; 
-    // Fallgeschwindigkeit des Players (erhoeht sich im level)
-    var playerGravity = 250;
-    var fallschirmOffen = false; 
-    var heli;
-    var clouds;
-    var birds;
-    var reverseEnemyTriggers
-    // anzahl der voegel (erhoeht sich im level)
-    var birdCount = 3;
-    var stars;
-    // anzahl der sterne (erhoeht sich im level)
-    var starCount = 4;
+BasicGame.Game.prototype = {
 
-    var textSprite;
-    var level = 1;
-    var levelText;
-    var cursors;
-    var score = 0;
-    var scoreText;
-    var lifes = 3;
-    var lifesText;
-    var moveCamera=true;
+    create: function () {
 
-    var high = 550;
-    var meter = 8;
-    var text = null;
-    var grd;
 
-    function create() 
-    {
-        //  We're going to be using physics, so enable the Arcade Physics system
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-        game.world.setBounds(0 ,0, 1024, worldHeight);
-        
+        this.world.setBounds(0 ,0, 1024, BasicGame.worldHeight);
+
         //set background and ground
-        game.stage.backgroundColor = '#9EDEF2';
+        this.stage.backgroundColor = '#9EDEF2';
 
         // Some clouds in the background
-        clouds = game.add.group();
+        clouds = this.add.group();
 
         //  Here we'll create some clouds
         for (var i = 0; i < 15; i++)
@@ -80,27 +56,33 @@ function playGame() {
             var cloud = clouds.create(i * Math.random()*550+100, i * Math.random()*880+600, 'cloud');
         }
 
+        this.createText();
+
         //  Some stars to collect
-        stars = game.add.group();
+        stars = this.add.group();
 
         //  We will enable physics for any star that is created in this group
         stars.enableBody = true;
 
         //  Here we'll create 12 of them evenly spaced apart
-        for (var i = 0; i < starCount; i++)
+        for (var i = 0; i < BasicGame.starCount; i++)
         {
             //  Create a star inside of the 'stars' group
             var star = stars.create(i * Math.random()*500+100, i * Math.random()*700+700, 'star');
         }
         
-        ground = game.add.sprite(0, game.world.height-150, 'ground');
+        ground = this.add.sprite(0, this.world.height-150, 'ground');
         ground.scale.setTo(1.3,1); //doppelt so breit
 
         //set heli außerhalb vom spielfeld (rechts)
-        heli = game.add.sprite(game.world.width+300, 60, 'heli');
+        heli = this.add.sprite(this.world.width+300, 60, 'heli');
 
         // The player and its settings
-        player = game.add.sprite(game.world.width+390, 0, 'dude');
+        player = this.add.sprite(this.world.width+390, 0, 'dude');
+        player.enableBody = true;
+        
+        //  We need to enable physics on the player
+        this.physics.arcade.enable(player);
 
         //player sprite wird verschoben
         player.animations.add('left', [1], 4, true);
@@ -109,102 +91,102 @@ function playGame() {
         player.animations.add('dead', [3], 4, true);
         player.animations.add('up', [0], 4, true);
 
-        //  We need to enable physics on the player
-        game.physics.arcade.enable(player);
-
-        //  We're going to be using physics, so enable the Arcade Physics system
-        game.physics.startSystem(Phaser.Physics.ARCADE);
-
         //  some birds to collide
-        birds = game.add.group();
-        game.physics.arcade.enable(birds);
+        birds = this.add.group();
+        this.physics.arcade.enable(birds);
         birds.enableBody = true;
         birds.physicsBodyType = Phaser.Physics.ARCADE;
 
 
-        for (var i = 0; i < birdCount; i++)
+        for (var i = 0; i < BasicGame.birdCount; i++)
         {
             //  Create the birds
-            var bird = birds.create(0, i * Math.random() *600 + 600, 'bird', 0);
-            bird.body.velocity.x = 50;
+            var bird = birds.create(i * Math.random() *600 + 600, i * Math.random() *600 + 600, 'bird', 0);
+            bird.birdDirection = 1;
         }
         birds.callAll('animations.add', 'animations', 'right', [0, 1], 4, true);
         birds.callAll('animations.add', 'animations', 'left', [2, 3], 4, true);
- 
         
         //  And play them
         birds.callAll('animations.play', 'animations', 'right');
         
-
-        game.camera.follow(player);
-
-        var style = { font: "55px", fill: "#0C96CD"};
-        //  The score
-    // ToDo: der Score ist momentan noch fest prositioniert - soll aber dem Player folgen
-        
+        this.camera.follow(player);
 
         //  Our controls.
-        cursors = game.input.keyboard.createCursorKeys();
+        cursors = this.input.keyboard.createCursorKeys();
 
-    }
-    function createText() {
-        text = game.add.text(0,0, 'Level: ' + level + '       Sterne: ' + score + '       Leben: ' + lifes);
 
-        text.font = 'Amatic SC';
-        text.fontSize = 30;
+    },
 
-        textSprite = game.add.sprite(15, 20, null);
-        textSprite.addChild(text);
+    createText: function () {
 
-        game.physics.enable(textSprite, Phaser.Physics.ARCADE);
-        textSprite.body.gravity.y = 0;
+        BasicGame.text = this.add.text(15,20, 'Level: ' + BasicGame.level + '      Sterne: ' + BasicGame.score + '      Leben: ' + BasicGame.lifes);
 
-         for (var i = 1; i < 6; i++)
+        //text.font = 'Loved by the King';
+        BasicGame.text.fontSize = 30;
+        BasicGame.text.padding.set(10, 16);
+        BasicGame.text.fixedToCamera = true;
+        
+         for (var i = 1; i < BasicGame.meter; i++)
         {
-            var highText = game.add.text(950, game.world.height-high, ' ' + meter*i + ' m');
-            high += 500;
-            highText.font = 'Amatic SC';
+            var highText = this.add.text(935, this.world.height-BasicGame.high, '_' + 8*i + 'm');
+            BasicGame.high += 500;
+            //highText.font = 'Loved by the King';
             highText.fontSize = 50;
+            highText.padding.set(10, 16);
          }
-    }
+    },
 
-    function update() 
-    {
-       //  Reset the players velocity (movement)
+    update: function () {
+
+        //  Reset the players velocity (movement)
         player.body.velocity.x = 0;
         // Bounding-Box settings
         player.body.setSize(65, 150, 137, 161);
 
-        player.animations.play('up');
+        if (!player.animations._anims.dead.isPlaying) {
+            player.animations.play('up');
+        }
 
         //bei start kommt heli mit dude reingeflogen    
-        if (heli.x > game.world.centerX-270) 
+        if (heli.x > this.world.centerX-270) 
         {
             //geschwindigkeit und position     
             heli.x -= 4;
             player.x -= 4;
         }
+
+        //  birds mit welt colidieren
+        birds.forEachAlive(function (bird) {
+            if (bird.body.x >= 1024-72) {
+                bird.birdDirection = -1;
+                bird.animations.play('left');
+            } else if (bird.body.x <= 0) {
+                bird.birdDirection = 1; 
+                bird.animations.play('right');
+            } 
+            bird.body.velocity.x = 200 * bird.birdDirection;
+        });
         
         //Player springt los, erst wenn der heli angekommen ist
-        if (cursors.down.isDown && heli.x<=game.world.centerX-200)
+        if (cursors.down.isDown && heli.x<=this.world.centerX-200)
         { 
             //  Player physics properties. Give the little guy a slight bounce.
-            if (fallschirmOffen == true) {
+            if (BasicGame.fallschirmOffen == true) {
                 player.body.bounce.y = 0.1;
             }
-            player.body.gravity.y = playerGravity;
+            player.body.gravity.y = BasicGame.playerGravity;
             player.body.collideWorldBounds = true;
-            textSprite.body.gravity.y = playerGravity;
         }
 
         //cursor bewegen, wenn er gefallen ist
-        if (cursors.left.isDown && player.body.gravity.y == playerGravity)
+        if (cursors.left.isDown && player.body.gravity.y == BasicGame.playerGravity)
         {
             //  Move to the left
             player.body.velocity.x = -300;
             player.animations.play('left');
         }
-        else if (cursors.right.isDown && player.body.gravity.y == playerGravity)
+        else if (cursors.right.isDown && player.body.gravity.y == BasicGame.playerGravity)
         {
             //  Move to the right
             player.body.velocity.x = 300;
@@ -212,69 +194,81 @@ function playGame() {
         }
 
         // Fallschirm oeffnen sobald Ground sichtbar ist
-        if (cursors.up.isDown && player.body.y >= game.world.height-600)
+        if (cursors.up.isDown && player.body.y >= this.world.height-600)
         {
-            textSprite.body.gravity.y = 0;
             player.body.velocity.y = 180;
             player.animations.play('down');
-            fallschirmOffen = true; 
+            BasicGame.fallschirmOffen = true; 
         } 
-        else if (fallschirmOffen == false && player.body.y >= game.world.height-150) {
-            textSprite.body.gravity.y = 0;
-            player.animations.stop();
-            player.frame = 3;
+        else if (BasicGame.fallschirmOffen == false && player.body.y >= this.world.height-150) {
+            player.animations.play('dead');
+            BasicGame.newLevel = false;
+            this.time.events.add(1500, this.quitGame, this);
         }
 
-        if (fallschirmOffen == true)
+        if (BasicGame.fallschirmOffen == true)
         {
             player.animations.play('down');
-        }        
+            BasicGame.newLevel = true;
+            this.time.events.add(3000, this.quitGame, this);
+        } 
 
-        if (game.camera.view.y<2400 && moveCamera==true)
+        if (this.camera.view.y<BasicGame.worldHeight-600 && BasicGame.moveCamera==true)
         {
-            game.camera.view.x=100;
-            game.camera.view.y=200;
-            game.camera.bounds.y=player.y;
+            this.camera.view.x=100;
+            this.camera.view.y=200;
+            this.camera.bounds.y=player.y;
         } else {
-            moveCamera=false;
-            game.camera.view.y=2400;
+            BasicGame.moveCamera=false;
+            this.camera.view.y=BasicGame.worldHeight-600;
         }
-
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-        game.physics.arcade.overlap(player, stars, collectStar, null, this);
-        game.physics.arcade.overlap(player, birds, collideBird, null, this);
-    }
+        this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
+        this.physics.arcade.overlap(player, birds, this.collideBird, null, this);
 
-    function render() 
-    {
-        //game.debug.cameraInfo(game.camera, 32, 32);
-        //game.debug.spriteCoords(player, 32, 500);
-    }
+    },
 
-    function collectStar (player, star) 
+    collectStar: function (player, star) 
     {
         // Removes the star from the screen
         star.kill();
 
-        //  Add and update the starScore
-        score += 1;
-        scoreText.text = 'Sterne: ' + score;
-        for (var i = 1; i < 10; i++)
-        {
-            if (score >=3*i) {
-                lifes += 1;
-                lifesText.text = 'Leben: ' + lifes;
-            }
+        //  Add and update the starBasicGame.score
+        BasicGame.score += 1;
+        if (BasicGame.score >=3) {
+            BasicGame.lifes += 1;
+            BasicGame.score = 0;
         }
+        BasicGame.text.text = 'Level: ' + BasicGame.level + '      Sterne: ' + BasicGame.score + '      Leben: ' + BasicGame.lifes;
+
+    },
+
+    collideBird: function (player, bird) 
+    {
+        birds.forEachAlive(function (b) {
+            b.kill();
+        });
+        stars.forEachAlive(function (s) {
+            s.kill();
+        });
+        //  Add and update the BasicGame.lifescore
+        BasicGame.lifes -= 1;
+        BasicGame.text.text = 'Level: ' + BasicGame.level + '      Sterne: ' + BasicGame.score + '      Leben: ' + BasicGame.lifes;
+        player.animations.play('dead');
+        BasicGame.newLevel = false;
+        this.time.events.add(500, this.quitGame, this);
+    },
+
+    quitGame: function (lifes, score, level, newLevel) {
+        if (BasicGame.newLevel == true) {
+            BasicGame.level += 1;
+        } 
+        //  Here you should destroy anything you no longer need.
+        //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
+
+        //  Then let's go back to the main menu.
+        this.state.start('MainMenu');
+
     }
 
-    function collideBird (player, birds) 
-    {
-        // Removes the player from the screen
-        player.animations.play('dead');
-        game.time.events.add(250, function() {
-            player.kill();
-            birds.kill();
-        })
-    }
-}
+};
