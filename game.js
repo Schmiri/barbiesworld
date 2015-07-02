@@ -64,9 +64,6 @@ BasicGame.Game.prototype = {
         //set heli außerhalb vom spielfeld (rechts)
         heli = this.add.sprite(this.world.width+300, 60, 'heli');
 
-        // Levels, Stars and Lifes, high in meter as well
-        this.createText();
-
         // The player and its settings
         player = this.add.sprite(this.world.width+390, 0, 'dude');
         player.enableBody = true;
@@ -80,6 +77,9 @@ BasicGame.Game.prototype = {
         player.animations.add('down', [2], 4, true);
         player.animations.add('dead', [3], 4, true);
         player.animations.add('up', [0], 4, true);
+
+        // Levels, Stars and Lifes, high in meter as well
+        this.createText();
 
         //  some birds to collide
         birds = this.add.group();
@@ -117,7 +117,7 @@ BasicGame.Game.prototype = {
         
          for (var i = 1; i < BasicGame.meter; i++)
         {
-            BasicGame.highText = this.add.text(935, this.world.height-BasicGame.high, '_' + 8*i + 'm');
+            BasicGame.highText = this.add.text(920, this.world.height-BasicGame.high, '_' + 8*i + 'm');
             BasicGame.high += 500;
             BasicGame.highText.font = 'Loved by the King';
             BasicGame.highText.fontSize = 50;
@@ -153,11 +153,11 @@ BasicGame.Game.prototype = {
                 bird.birdDirection = 1; 
                 bird.animations.play('right');
             } 
-            bird.body.velocity.x = 200 * bird.birdDirection;
+            bird.body.velocity.x = BasicGame.birdGravity * bird.birdDirection;
         });
         
         //Player springt los, erst wenn der heli angekommen ist
-        if (cursors.down.isDown && heli.x<=this.world.centerX-200)
+        if (cursors.down.isDown && heli.x<=this.world.centerX-200 && BasicGame.playerAlive == true)
         { 
             //  Player physics properties. Give the little guy a slight bounce.
             if (BasicGame.fallschirmOffen == true) {
@@ -168,13 +168,13 @@ BasicGame.Game.prototype = {
         }
 
         //cursor bewegen, wenn er gefallen ist
-        if (cursors.left.isDown && player.body.gravity.y == BasicGame.playerGravity)
+        if (cursors.left.isDown && player.body.gravity.y == BasicGame.playerGravity && BasicGame.playerAlive == true)
         {
             //  Move to the left
             player.body.velocity.x = -300;
             player.animations.play('left');
         }
-        else if (cursors.right.isDown && player.body.gravity.y == BasicGame.playerGravity)
+        else if (cursors.right.isDown && player.body.gravity.y == BasicGame.playerGravity && BasicGame.playerAlive == true)
         {
             //  Move to the right
             player.body.velocity.x = 300;
@@ -182,19 +182,21 @@ BasicGame.Game.prototype = {
         }
 
         // Fallschirm oeffnen sobald Ground sichtbar ist
-        if (cursors.up.isDown && player.body.y >= this.world.height-600)
+
+        if (cursors.up.isDown && player.body.y >= this.world.height-600 && BasicGame.playerAlive == true)
         {
             player.body.velocity.y = 180;
             player.animations.play('down');
             BasicGame.fallschirmOffen = true; 
         } 
         else if (BasicGame.fallschirmOffen == false && player.body.y >= this.world.height-150) {
+            BasicGame.playerAlive = false;
             player.animations.play('dead');
             BasicGame.newLevel = false;
             this.time.events.add(1500, this.quitGame, this);
         }
 
-        if (BasicGame.fallschirmOffen == true)
+        if (BasicGame.fallschirmOffen == true && BasicGame.playerAlive == true)
         {
             player.animations.play('down');
             BasicGame.newLevel = true;
@@ -233,6 +235,7 @@ BasicGame.Game.prototype = {
 
     collideBird: function (player, bird) 
     {
+        BasicGame.playerAlive = false;
         birds.forEachAlive(function (b) {
             b.kill();
         });
@@ -244,10 +247,10 @@ BasicGame.Game.prototype = {
         BasicGame.text.text = 'Level: ' + BasicGame.level + '      Sterne: ' + BasicGame.score + '      Leben: ' + BasicGame.lifes;
         player.animations.play('dead');
         BasicGame.newLevel = false;
-        this.time.events.add(500, this.quitGame, this);
+        this.time.events.add(1000, this.quitGame, this);
     },
 
-    quitGame: function (lifes, score, level, newLevel) {
+    quitGame: function (lifes, score, level, newLevel, highText) {
         if (BasicGame.newLevel == true) {
             BasicGame.level += 1;
         } 
