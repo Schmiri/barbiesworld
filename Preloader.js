@@ -1,8 +1,5 @@
 BasicGame.Preloader = function (game) {
 
-    this.background = null;
-    this.preloadBar = null;
-
     //this.ready = false;
 
 
@@ -16,13 +13,10 @@ BasicGame.Preloader.prototype = {
         //  These are the assets we loaded in Boot.js
         //  A nice sparkly background and a loading progress bar
         this.stage.backgroundColor = '#9EDEF2';
-        this.background = this.add.sprite(0, 0, 'preloaderBackground');
-        this.preloadBar = this.add.sprite(300, 400, 'preloaderBar');
-
+     
         //  This sets the preloadBar sprite as a loader sprite.
         //  What that does is automatically crop the sprite from 0 to full-width
         //  as the files below are loaded in.
-        this.load.setPreloadSprite(this.preloadBar);
 
         //  Here we load the rest of the assets our game needs.
         //  As this is just a Project Template I've not provided these assets, swap them for your own.
@@ -36,6 +30,8 @@ BasicGame.Preloader.prototype = {
         this.load.image('playButton', 'assets/play_button.png');
         this.load.image('reloadButton', 'assets/reload_button.png');
         this.load.image('nextButton', 'assets/next_button.png');
+        this.load.image('tutorialButton', 'assets/tutorial_button.png');
+
 
         //this.load.audio('titleMusic', ['audio/main_menu.mp3']);
 
