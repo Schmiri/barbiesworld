@@ -35,9 +35,9 @@ BasicGame.MainMenu.prototype = {
 		//this.add.sprite(0, 0, 'titlepage');
 
 
-		this.playButton = this.add.button(340, 170, 'playButton', this.startGame, this);
-		this.reloadButton = this.add.button(340, 170, 'reloadButton', this.reloadGame, this);
-		this.nextButton = this.add.button(340, 170, 'nextButton', this.nextGame, this);
+		this.playButton = this.add.button(320, 170, 'playButton', this.startGame, this);
+		this.reloadButton = this.add.button(320, 170, 'reloadButton', this.reloadGame, this);
+		this.nextButton = this.add.button(320, 170, 'nextButton', this.nextGame, this);
 		this.playButton.visible = false;
 		this.reloadButton.visible = false;
 		this.nextButton.visible = false; 
@@ -47,7 +47,7 @@ BasicGame.MainMenu.prototype = {
 
 	createText: function () {
 		
-        this.headline = this.add.text(430,50, 'Fly high');
+        this.headline = this.add.text(420,50, 'Fly high');
 
 		this.headline.font = 'Loved by the King';
         this.headline.fontSize = 90;
@@ -76,12 +76,12 @@ BasicGame.MainMenu.prototype = {
         	if (BasicGame.newLevel == false) {
 	        	this.playButton.visible = false;
 				this.reloadButton.visible = true;
-	        	this.playButton = this.add.button(340, 300, 'playButton', this.startGame, this);
+	        	this.playButton = this.add.button(320, 300, 'playButton', this.startGame, this);
 	        } 
 	        else if (BasicGame.newLevel == true) {
 	        	this.playButton.visible = false;
 				this.nextButton.visible = true;
-	        	this.playButton = this.add.button(340, 300, 'playButton', this.startGame, this);
+	        	this.playButton = this.add.button(320, 300, 'playButton', this.startGame, this);
 	        }
         }
  
@@ -92,19 +92,20 @@ BasicGame.MainMenu.prototype = {
 		//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
 		//this.music.stop();
 		BasicGame.newGame = true;
-		BasicGame.lifes = BasicGame.lifes;
+		BasicGame.lifes = 3;
 		BasicGame.worldHeight = 3000;
         BasicGame.meter = 6;  
         BasicGame.high = 550;
         BasicGame.birdCount = 3;
         BasicGame.starCount = 4;
+        BasicGame.birdGravity = 200;
         BasicGame.cloudCount = 20;
-        BasicGame.level = BasicGame.level;
-        BasicGame.score = BasicGame.score;
+        BasicGame.level = 1;
+        BasicGame.score = 0;
         BasicGame.playerGravity = 240;
         BasicGame.fallschirmOffen = false; 
         BasicGame.moveCamera=true;
-        BasicGame.playerAlive = true;  
+        BasicGame.playerAlive = true;
         BasicGame.hightext;
 		//	And start the actual game
 		this.state.start('Game');
@@ -120,6 +121,7 @@ BasicGame.MainMenu.prototype = {
 		BasicGame.lifes = BasicGame.lifes;
 		BasicGame.level = BasicGame.level;
         BasicGame.score = BasicGame.score;
+        BasicGame.birdGravity = BasicGame.birdGravity;
         BasicGame.cloudCount = BasicGame.cloudCount;
 		BasicGame.fallschirmOffen = false; 
         BasicGame.moveCamera = true;
@@ -156,6 +158,7 @@ BasicGame.MainMenu.prototype = {
 	        BasicGame.high = 550;
 	        BasicGame.birdCount = 5;
 	        BasicGame.starCount = 5;
+	        BasicGame.birdGravity = 220;
 			BasicGame.playerGravity = 247;  
 			BasicGame.cloudCount = 30;
 		}
@@ -166,6 +169,7 @@ BasicGame.MainMenu.prototype = {
 	        BasicGame.high = 550;
 	        BasicGame.birdCount = 7;
 	        BasicGame.starCount = 6;
+	        BasicGame.birdGravity = 240;
 			BasicGame.playerGravity = 254; 
 			BasicGame.cloudCount = 40;
 		}
@@ -176,6 +180,7 @@ BasicGame.MainMenu.prototype = {
 	        BasicGame.high = 550;
 	        BasicGame.birdCount = 9;
 	        BasicGame.starCount = 7;
+	        BasicGame.birdGravity = 260;
 			BasicGame.playerGravity = 261; 
 			BasicGame.cloudCount = 50;
 		}
@@ -186,6 +191,7 @@ BasicGame.MainMenu.prototype = {
 	        BasicGame.high = 550;
 	        BasicGame.birdCount = 11;
 	        BasicGame.starCount = 8;
+	        BasicGame.birdGravity = 280;
 			BasicGame.playerGravity = 268;
 			BasicGame.cloudCount = 60;
 		}
@@ -196,6 +202,7 @@ BasicGame.MainMenu.prototype = {
 	        BasicGame.high = 550;
 	        BasicGame.birdCount = 13;
 	        BasicGame.starCount = 9;
+	        BasicGame.birdGravity = 300;
 			BasicGame.playerGravity = 275;
 			BasicGame.cloudCount = 70;
 		}
@@ -206,6 +213,7 @@ BasicGame.MainMenu.prototype = {
 	        BasicGame.high = 550;
 	        BasicGame.birdCount = 15;
 	        BasicGame.starCount = 10;
+	        BasicGame.birdGravity = 320;
 			BasicGame.playerGravity = 282;
 			BasicGame.cloudCount = 80;
 		}
@@ -216,6 +224,7 @@ BasicGame.MainMenu.prototype = {
 	        BasicGame.high = 550;
 	        BasicGame.birdCount = 17;
 	        BasicGame.starCount = 11;
+	        BasicGame.birdGravity = 340;
 			BasicGame.playerGravity = 289;
 			BasicGame.cloudCount = 90;
 		}

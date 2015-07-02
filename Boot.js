@@ -29,6 +29,7 @@ BasicGame.Boot = function (game) {
         var counter;
         var highText;
         var headline;
+        var birdGravity;
 
 };
 
@@ -90,6 +91,7 @@ BasicGame.Boot.prototype = {
         BasicGame.birdCount = 3;
         BasicGame.starCount = 4;
         BasicGame.cloudCount = 20;
+        BasicGame.birdGravity = 200;
         BasicGame.lifes = 3;
         BasicGame.level = 1;
         BasicGame.score = 0;
@@ -100,6 +102,7 @@ BasicGame.Boot.prototype = {
         BasicGame.counter = 1; 
         BasicGame.highText;
         BasicGame.headline;
+
 
         //  By this point the preloader assets have loaded to the cache, we've set the game settings
         //  So now let's start the real preloader going
