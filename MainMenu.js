@@ -5,6 +5,7 @@ BasicGame.MainMenu = function (game) {
 	this.playButton = null;
 	this.reloadButton = null;
 	this.nextButton = null;
+	this.tutorialButton = null;
 
 
 };
@@ -35,12 +36,15 @@ BasicGame.MainMenu.prototype = {
 		//this.add.sprite(0, 0, 'titlepage');
 
 
-		this.playButton = this.add.button(320, 170, 'playButton', this.startGame, this);
-		this.reloadButton = this.add.button(320, 170, 'reloadButton', this.reloadGame, this);
-		this.nextButton = this.add.button(320, 170, 'nextButton', this.nextGame, this);
+		this.playButton = this.add.button(320, 190, 'playButton', this.startGame, this);
+		this.reloadButton = this.add.button(320, 190, 'reloadButton', this.reloadGame, this);
+		this.nextButton = this.add.button(320, 190, 'nextButton', this.nextGame, this);
+		this.tutorialButton = this.add.button(320, 320, 'tutorialButton', this.tutorial, this);
 		this.playButton.visible = false;
 		this.reloadButton.visible = false;
 		this.nextButton.visible = false; 
+		this.tutorialButton.visible = false;
+
 		this.createText();
 
 	},
@@ -70,18 +74,21 @@ BasicGame.MainMenu.prototype = {
         if (BasicGame.started == true)
         {
         	this.playButton.visible = true;
+        	this.tutorialButton.visible = true;
         } 
         else if (BasicGame.started == false) 
         {
         	if (BasicGame.newLevel == false) {
 	        	this.playButton.visible = false;
-				this.reloadButton.visible = true;
-	        	this.playButton = this.add.button(320, 300, 'playButton', this.startGame, this);
+	        	this.tutorialButton.visible = false;
+	        	this.reloadButton.visible = true;
+	        	this.playButton = this.add.button(320, 320, 'playButton', this.startGame, this);
 	        } 
 	        else if (BasicGame.newLevel == true) {
 	        	this.playButton.visible = false;
+	        	this.tutorialButton.visible = false;
 				this.nextButton.visible = true;
-	        	this.playButton = this.add.button(320, 300, 'playButton', this.startGame, this);
+	        	this.playButton = this.add.button(320, 320, 'playButton', this.startGame, this);
 	        }
         }
  
@@ -133,6 +140,10 @@ BasicGame.MainMenu.prototype = {
 		//	And start the actual game
 		this.state.start('Game');
 
+	},
+
+	tutorial: function (pointer) {
+		//this.state.start('Tutorial');
 	},
 
 	nextGame: function (pointer) {
