@@ -30,6 +30,7 @@ BasicGame.Boot = function (game) {
         var highText;
         var headline;
         var birdGravity;
+        var gameOver;
 
 };
 
@@ -98,10 +99,13 @@ BasicGame.Boot.prototype = {
         BasicGame.playerGravity = 240;
         BasicGame.fallschirmOffen = false; 
         BasicGame.moveCamera=true;
+        this.camera.view.x = 100;
+        this.camera.view.y = 200;
         BasicGame.playerAlive = true; 
         BasicGame.counter = 1; 
         BasicGame.highText;
         BasicGame.headline;
+        BasicGame.gameOver;
 
 
         //  By this point the preloader assets have loaded to the cache, we've set the game settings

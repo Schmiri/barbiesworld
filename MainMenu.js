@@ -64,8 +64,12 @@ BasicGame.MainMenu.prototype = {
 		this.Swing();
 
 		if (BasicGame.lifes < 0) {
+			this.playButton.visible = false;
 			this.reloadButton.kill();
 			this.nextButton.kill();
+			this.playButton = this.add.button(320, 190, 'playButton', this.startGame, this);
+			this.tutorialButton = this.add.button(320, 320, 'tutorialButton', this.tutorial, this);
+
 		}
 
 	},
@@ -136,8 +140,8 @@ BasicGame.MainMenu.prototype = {
         BasicGame.worldHeight = BasicGame.worldHeight;
         BasicGame.meter = BasicGame.meter;  
         BasicGame.high = BasicGame.high;
-        BasicGame.hightext = BasicGame.hightext;
-		//	And start the actual game
+        BasicGame.highText = BasicGame.highText;
+         //	And start the actual game
 		this.state.start('Game');
 
 	},

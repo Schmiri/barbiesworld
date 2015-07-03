@@ -123,6 +123,13 @@ BasicGame.Game.prototype = {
             BasicGame.highText.fontSize = 50;
             BasicGame.highText.padding.set(10, 16);
          }
+
+        BasicGame.gameOver = this.add.text(400,100, ' ');;
+        BasicGame.gameOver.font = 'Loved by the King';
+        BasicGame.gameOver.fontSize = 60;
+        BasicGame.gameOver.padding.set(10, 16);
+        BasicGame.gameOver.fixedToCamera = true;
+
     },
 
     update: function () {
@@ -190,10 +197,7 @@ BasicGame.Game.prototype = {
             BasicGame.fallschirmOffen = true; 
         } 
         else if (BasicGame.fallschirmOffen == false && player.body.y >= this.world.height-150) {
-            BasicGame.playerAlive = false;
-            player.animations.play('dead');
-            BasicGame.newLevel = false;
-            this.time.events.add(1500, this.quitGame, this);
+            this.collideGround(player);
         }
 
         if (BasicGame.fallschirmOffen == true && BasicGame.playerAlive == true)
@@ -205,17 +209,16 @@ BasicGame.Game.prototype = {
 
         if (this.camera.view.y<BasicGame.worldHeight-600 && BasicGame.moveCamera==true)
         {
-            this.camera.view.x=100;
-            this.camera.view.y=200;
+            this.camera.view.x = 100;
+            this.camera.view.y = 200;
             this.camera.bounds.y=player.y;
         } else {
-            BasicGame.moveCamera=false;
+            this.moveCamera=false;
             this.camera.view.y=BasicGame.worldHeight-600;
         }
         //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
         this.physics.arcade.overlap(player, stars, this.collectStar, null, this);
         this.physics.arcade.overlap(player, birds, this.collideBird, null, this);
-
     },
 
     collectStar: function (player, star) 
@@ -244,10 +247,33 @@ BasicGame.Game.prototype = {
         });
         //  Add and update the BasicGame.lifescore
         BasicGame.lifes -= 1;
-        BasicGame.text.text = 'Level: ' + BasicGame.level + '      Sterne: ' + BasicGame.score + '      Leben: ' + BasicGame.lifes;
+        if (BasicGame.lifes < 0) {
+            BasicGame.gameOver.text = 'Game over';
+            BasicGame.text.text = 'Level: ' + BasicGame.level + '      Sterne: ' + BasicGame.score + '      Leben: 0';
+
+        } else {
+            BasicGame.text.text = 'Level: ' + BasicGame.level + '      Sterne: ' + BasicGame.score + '      Leben: ' + BasicGame.lifes;
+        }
         player.animations.play('dead');
         BasicGame.newLevel = false;
         this.time.events.add(1000, this.quitGame, this);
+    },
+
+    collideGround: function (player, ground) 
+    {
+        BasicGame.playerAlive = false;
+        player.animations.play('dead');
+        //  Add and update the BasicGame.lifescore
+        BasicGame.lifes -= 1;
+        if (BasicGame.lifes < 0) {
+            BasicGame.gameOver.text = 'Game over';
+            BasicGame.text.text = 'Level: ' + BasicGame.level + '      Sterne: ' + BasicGame.score + '      Leben: 0';
+
+        } else {
+            BasicGame.text.text = 'Level: ' + BasicGame.level + '      Sterne: ' + BasicGame.score + '      Leben: ' + BasicGame.lifes;
+        }
+        BasicGame.newLevel = false;
+        this.time.events.add(1500, this.quitGame, this);
     },
 
     quitGame: function (lifes, score, level, newLevel, highText) {
