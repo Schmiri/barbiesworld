@@ -123,7 +123,13 @@ BasicGame.MainMenu.prototype = {
         BasicGame.playerAlive = true;
         BasicGame.hightext;
 		//	And start the actual game
-		this.state.start('Game');
+		this.state.start('Game', null, true);
+		this.headline.visible = false;
+		clouds.visible = false;
+		this.playButton.visible = false;
+		this.reloadButton.visible = false;
+		this.nextButton.visible = false; 
+		this.tutorialButton.visible = false;
 
 	},
 
