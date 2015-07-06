@@ -8,9 +8,12 @@
     <script src="Preloader.js"></script>
     <script src="MainMenu.js"></script>
     <script src="Game.js"></script>
+    <script src="Tutorial.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Loved+by+the+King' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
     <style>
       @import url(http://fonts.googleapis.com/css?family=Loved+by+the+King);
+      @import url(http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300);
       body {
         width: 100%;
         height: 100%;
@@ -43,6 +46,7 @@
         game.state.add('Preloader', BasicGame.Preloader);
         game.state.add('MainMenu', BasicGame.MainMenu);
         game.state.add('Game', BasicGame.Game);
+        game.state.add('Tutorial', BasicGame.Tutorial);
         //  Now start the Boot state.
         game.state.start('Boot');
       };

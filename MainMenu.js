@@ -129,6 +129,7 @@ BasicGame.MainMenu.prototype = {
 		//this.music.stop();
 		BasicGame.started = false;
 		BasicGame.newGame = false;
+        BasicGame.high = 550;
 		BasicGame.lifes = BasicGame.lifes;
 		BasicGame.level = BasicGame.level;
         BasicGame.score = BasicGame.score;
@@ -147,7 +148,23 @@ BasicGame.MainMenu.prototype = {
 	},
 
 	tutorial: function (pointer) {
-		//this.state.start('Tutorial');
+		BasicGame.started = true;
+        BasicGame.newLevel = false;
+		BasicGame.worldHeight = 2400;
+        BasicGame.meter = 5;  
+        BasicGame.high = 550;
+        BasicGame.birdCount = 1;
+        BasicGame.starCount = 3;
+        BasicGame.birdGravity = 150;
+        BasicGame.cloudCount = 20;
+        BasicGame.playerGravity = 20;
+        BasicGame.fallschirmOffen = false; 
+        BasicGame.moveCamera=true;
+        BasicGame.playerAlive = true;
+        BasicGame.hightext;
+        BasicGame.tutorialText;
+         //	And start the Tutorial
+		this.state.start('Tutorial');
 	},
 
 	nextGame: function (pointer) {
