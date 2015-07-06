@@ -177,7 +177,7 @@ BasicGame.Tutorial.prototype = {
             BasicGame.tutorialText.text = 'Drücke die Pfeil-Tasten nach links oder rechts, \num Vögeln auszuweichen';
         }
 
-         if (player.body.y >= this.world.height-1700) {
+         if (player.body.y >= this.world.height-1650) {
             BasicGame.tutorialText.text = '';
         }
 
@@ -206,16 +206,16 @@ BasicGame.Tutorial.prototype = {
             player.animations.play('right');
         }
 
-        if (player.body.y >= this.world.height-1600) {
+        if (player.body.y >= this.world.height-1650) {
             BasicGame.tutorialText.text = 'Sammle Sterne um neue Leben zu erhalten. \nDrei Sterne bringen dir ein neues Leben';
         }
 
-         if (player.body.y >= this.world.height-900) {
+         if (player.body.y >= this.world.height-840) {
             BasicGame.tutorialText.text = '';
         }
 
         // Fallschirm oeffnen sobald Ground sichtbar ist
-        if (player.body.y >= this.world.height-700) {
+        if (player.body.y >= this.world.height-790) {
             BasicGame.tutorialText.text = 'Drücke die Up-Taste, \num sicher mit dem Fallschirm zu landen';
         }
 
