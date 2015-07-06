@@ -31,6 +31,7 @@ BasicGame.Boot = function (game) {
         var headline;
         var birdGravity;
         var gameOver;
+        var tutorialText;
 
 };
 
@@ -80,7 +81,7 @@ BasicGame.Boot.prototype = {
 
             //  The Google Fonts we want to load (specify as many as you like in the array)
             google: {
-              families: [ 'Loved by the King' ] 
+              families: [ 'Loved by the King', 'Open+Sans+Condensed:300:latin'  ] 
             }
         },
 
@@ -106,6 +107,7 @@ BasicGame.Boot.prototype = {
         BasicGame.highText;
         BasicGame.headline;
         BasicGame.gameOver;
+        BasicGame.tutorialText;
 
 
         //  By this point the preloader assets have loaded to the cache, we've set the game settings
