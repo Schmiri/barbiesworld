@@ -57,6 +57,10 @@ BasicGame.MainMenu.prototype = {
         this.headline.fontSize = 90;
         this.headline.padding.set(250, 16);
 
+        console.log("level: " + BasicGame.level);
+        console.log("Sterne: " + BasicGame.score);
+        console.log("Leben: " + BasicGame.lifes);
+
      },
 
 	update: function () {
@@ -180,8 +184,10 @@ BasicGame.MainMenu.prototype = {
         BasicGame.playerAlive = true;   
         BasicGame.hightext = BasicGame.hightext; 
 
+        console.log(BasicGame.counter);
         if (BasicGame.newLevel == true) {
         	BasicGame.counter++;
+        	console.log(BasicGame.counter);
         }
 
         if (BasicGame.counter == 2) {
@@ -261,9 +267,15 @@ BasicGame.MainMenu.prototype = {
 			BasicGame.cloudCount = 90;
 		}
         
-
+		
 		//	And start the actual game
-		this.state.start('Game');
+		this.state.start('Game', null, true);
+		this.headline.visible = false;
+		clouds.visible = false;
+		this.playButton.visible = false;
+		this.reloadButton.visible = false;
+		this.nextButton.visible = false; 
+		this.tutorialButton.visible = false;
 
 	},
 
