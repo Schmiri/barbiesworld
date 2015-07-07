@@ -196,13 +196,13 @@ BasicGame.MainMenu.prototype = {
         BasicGame.playerAlive = true;   
         BasicGame.hightext = BasicGame.hightext; 
 
-        console.log(BasicGame.counter);
-        if (BasicGame.newLevel == true) {
-        	BasicGame.counter++;
-        	console.log(BasicGame.counter);
-        }
+        //console.log(BasicGame.counter);
+        //if (BasicGame.newLevel == true) {
+        //	BasicGame.counter++;
+        //	console.log(BasicGame.counter);
+        //}
 
-        if (BasicGame.counter == 2) {
+        if (BasicGame.level == 2) {
 			BasicGame.worldHeight = 4000;
 	        BasicGame.meter = 8;     
 	        BasicGame.high = 550;
@@ -213,7 +213,7 @@ BasicGame.MainMenu.prototype = {
 			BasicGame.cloudCount = 30;
 		}
 
-		if (BasicGame.counter == 3) {
+		if (BasicGame.level == 3) {
 			BasicGame.worldHeight = 5000;
 	        BasicGame.meter = 10;     
 	        BasicGame.high = 550;
@@ -224,7 +224,7 @@ BasicGame.MainMenu.prototype = {
 			BasicGame.cloudCount = 40;
 		}
 
-		if (BasicGame.counter == 4) {
+		if (BasicGame.level == 4) {
 			BasicGame.worldHeight = 6000;
 	        BasicGame.meter = 12;     
 	        BasicGame.high = 550;
@@ -235,7 +235,7 @@ BasicGame.MainMenu.prototype = {
 			BasicGame.cloudCount = 50;
 		}
 
-		if (BasicGame.counter == 5) {
+		if (BasicGame.level == 5) {
 			BasicGame.worldHeight = 7000;
 	        BasicGame.meter = 14;     
 	        BasicGame.high = 550;
@@ -246,7 +246,7 @@ BasicGame.MainMenu.prototype = {
 			BasicGame.cloudCount = 60;
 		}
 
-		if (BasicGame.counter == 6) {
+		if (BasicGame.level == 6) {
 			BasicGame.worldHeight = 8000;
 	        BasicGame.meter = 16;     
 	        BasicGame.high = 550;
@@ -257,7 +257,7 @@ BasicGame.MainMenu.prototype = {
 			BasicGame.cloudCount = 70;
 		}
 
-		if (BasicGame.counter == 7) {
+		if (BasicGame.level == 7) {
 			BasicGame.worldHeight = 9000;
 	        BasicGame.meter = 18;     
 	        BasicGame.high = 550;
@@ -268,7 +268,7 @@ BasicGame.MainMenu.prototype = {
 			BasicGame.cloudCount = 80;
 		}
 
-		if (BasicGame.counter >7) {
+		if (BasicGame.level >7) {
 			BasicGame.worldHeight = 10000;
 	        BasicGame.meter = 20;     
 	        BasicGame.high = 550;
