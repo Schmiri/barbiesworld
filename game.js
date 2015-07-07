@@ -114,7 +114,7 @@ BasicGame.Game.prototype = {
     createHighText: function () {
          for (var i = 1; i < BasicGame.meter; i++)
         {
-            BasicGame.highText = this.add.text(920, BasicGame.worldHeight-BasicGame.high, '_' + 8*i + 'm');
+            BasicGame.highText = this.add.text(915, BasicGame.worldHeight-BasicGame.high, '_' + 8*i + 'm');
             BasicGame.high += 500;
             BasicGame.highText.font = 'Loved by the King';
             BasicGame.highText.fontSize = 50;

@@ -1,6 +1,6 @@
 
 BasicGame.MainMenu = function (game) {
-	this.music = null;
+
 	this.playButton = null;
 	this.reloadButton = null;
 	this.nextButton = null;
@@ -21,8 +21,7 @@ BasicGame.MainMenu.prototype = {
             var cloud = clouds.create(i * Math.random()*270+100, i * Math.random()*580+630, 'cloud');
             cloud.body.velocity.y = -150;
         }
-		this.music = this.add.audio('titleMusic');
-		this.music.play();
+
 
 		this.playButton = this.add.button(320, 220, 'playButton', this.startGame, this);
 		this.reloadButton = this.add.button(320, 220, 'reloadButton', this.reloadGame, this);
