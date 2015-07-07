@@ -260,7 +260,6 @@ BasicGame.Game.prototype = {
             BasicGame.text.text = 'Level: ' + BasicGame.level + '      Sterne: ' + BasicGame.score + '      Leben: 0';
 
         } else {
-            this.createHighText();
             BasicGame.text.text = 'Level: ' + BasicGame.level + '      Sterne: ' + BasicGame.score + '      Leben: ' + BasicGame.lifes;
         }
         player.animations.play('dead');
