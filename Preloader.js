@@ -1,5 +1,6 @@
 BasicGame.Preloader = function (game) {
     this.ready = false;
+    this.music = null;
 };
 
 BasicGame.Preloader.prototype = {
@@ -27,6 +28,8 @@ BasicGame.Preloader.prototype = {
 
 
     create: function () {
+        this.music = this.add.audio('titleMusic');
+        this.music.play();
     },
 
     update: function () {
