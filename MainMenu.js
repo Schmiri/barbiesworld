@@ -1,21 +1,15 @@
 
 BasicGame.MainMenu = function (game) {
-
-	//this.music = null;
+	this.music = null;
 	this.playButton = null;
 	this.reloadButton = null;
 	this.nextButton = null;
 	this.tutorialButton = null;
-
-
 };
 
 BasicGame.MainMenu.prototype = {
-
 	create: function () {
-
 		this.world.setBounds(0 ,0, 1024, 500);
-
 		// Some clouds in the background
         clouds = this.add.group();
         this.physics.arcade.enable(clouds);
@@ -27,14 +21,8 @@ BasicGame.MainMenu.prototype = {
             var cloud = clouds.create(i * Math.random()*270+100, i * Math.random()*580+630, 'cloud');
             cloud.body.velocity.y = -150;
         }
-		//	We've already preloaded our assets, so let's kick right into the Main Menu itself.
-		//	Here all we're doing is playing some music and adding a picture and button
-		//	Naturally I expect you to do something significantly better :)
-
-		//this.music = this.add.audio('titleMusic');
-		//this.music.play();
-		//this.add.sprite(0, 0, 'titlepage');
-
+		this.music = this.add.audio('titleMusic');
+		this.music.play();
 
 		this.playButton = this.add.button(320, 220, 'playButton', this.startGame, this);
 		this.reloadButton = this.add.button(320, 220, 'reloadButton', this.reloadGame, this);
@@ -46,25 +34,16 @@ BasicGame.MainMenu.prototype = {
 		this.tutorialButton.visible = false;
 
 		this.createText();
-
 	},
 
 	createText: function () {
-		
         this.headline = this.add.text(420,50, 'Fly high');
-
 		this.headline.font = 'Loved by the King';
         this.headline.fontSize = 90;
         this.headline.padding.set(250, 16);
-
-        console.log("level: " + BasicGame.level);
-        console.log("Sterne: " + BasicGame.score);
-        console.log("Leben: " + BasicGame.lifes);
-
      },
 
 	update: function () {
-
 		this.Swing();
 
 		if (BasicGame.lifes < 0) {
@@ -73,9 +52,7 @@ BasicGame.MainMenu.prototype = {
 			this.nextButton.kill();
 			this.playButton = this.add.button(320, 220, 'playButton', this.startGame, this);
 			this.tutorialButton = this.add.button(320, 350, 'tutorialButton', this.tutorial, this);
-
 		}
-
 	},
 
 	Swing: function() {
@@ -99,7 +76,6 @@ BasicGame.MainMenu.prototype = {
 	        	this.playButton = this.add.button(320, 350, 'playButton', this.startGame, this);
 	        }
         }
- 
     },
 
 	startGame: function (pointer) {
@@ -130,7 +106,6 @@ BasicGame.MainMenu.prototype = {
 		this.reloadButton.visible = false;
 		this.nextButton.visible = false; 
 		this.tutorialButton.visible = false;
-
 	},
 
 	reloadGame: function (pointer) {
@@ -142,7 +117,7 @@ BasicGame.MainMenu.prototype = {
         BasicGame.high = 550;
 		BasicGame.lifes = BasicGame.lifes;
 		BasicGame.level = BasicGame.level;
-        BasicGame.score = BasicGame.score;
+        //BasicGame.score = BasicGame.score;
         BasicGame.birdGravity = BasicGame.birdGravity;
         BasicGame.cloudCount = BasicGame.cloudCount;
 		BasicGame.fallschirmOffen = false; 
@@ -184,7 +159,6 @@ BasicGame.MainMenu.prototype = {
 	},
 
 	nextGame: function (pointer) {
-
 		//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
 		//this.music.stop();
 		BasicGame.newGame = false;
@@ -195,12 +169,6 @@ BasicGame.MainMenu.prototype = {
         BasicGame.moveCamera=true;
         BasicGame.playerAlive = true;   
         BasicGame.hightext = BasicGame.hightext; 
-
-        //console.log(BasicGame.counter);
-        //if (BasicGame.newLevel == true) {
-        //	BasicGame.counter++;
-        //	console.log(BasicGame.counter);
-        //}
 
         if (BasicGame.level == 2) {
 			BasicGame.worldHeight = 4000;
@@ -278,8 +246,6 @@ BasicGame.MainMenu.prototype = {
 			BasicGame.playerGravity = 289;
 			BasicGame.cloudCount = 90;
 		}
-        
-		
 		//	And start the actual game
 		this.state.start('Game', null, true);
 		this.headline.visible = false;
@@ -288,8 +254,5 @@ BasicGame.MainMenu.prototype = {
 		this.reloadButton.visible = false;
 		this.nextButton.visible = false; 
 		this.tutorialButton.visible = false;
-
 	},
-
-
 };

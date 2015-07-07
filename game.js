@@ -1,7 +1,6 @@
 BasicGame.Game = function (game) {
 
     //  When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
-
     this.game;      //  a reference to the currently running game (Phaser.Game)
     this.add;       //  used to add sprites, text, groups, etc (Phaser.GameObjectFactory)
     this.camera;    //  a reference to the game camera (Phaser.Camera)
@@ -18,18 +17,11 @@ BasicGame.Game = function (game) {
     this.particles; //  the particle manager (Phaser.Particles)
     this.physics;   //  the physics manager (Phaser.Physics)
     this.rnd;       //  the repeatable random number generator (Phaser.RandomDataGenerator)
-
-
-
-
 };
 
 BasicGame.Game.prototype = {
 
     create: function () {
-
-        
-
         this.world.setBounds(0 ,0, 1024, BasicGame.worldHeight);
 
         //set background and ground
@@ -103,14 +95,10 @@ BasicGame.Game.prototype = {
 
         //  Our controls.
         cursors = this.input.keyboard.createCursorKeys();
-
-
     },
 
     createText: function () {
-
         BasicGame.text = this.add.text(15,20, 'Level: ' + BasicGame.level + '      Sterne: ' + BasicGame.score + '      Leben: ' + BasicGame.lifes);
-
         BasicGame.text.font = 'Loved by the King';
         BasicGame.text.fontSize = 30;
         BasicGame.text.padding.set(10, 16);
@@ -121,11 +109,9 @@ BasicGame.Game.prototype = {
         BasicGame.gameOver.fontSize = 60;
         BasicGame.gameOver.padding.set(10, 16);
         BasicGame.gameOver.fixedToCamera = true;
-
     },
 
     createHighText: function () {
-
          for (var i = 1; i < BasicGame.meter; i++)
         {
             BasicGame.highText = this.add.text(920, BasicGame.worldHeight-BasicGame.high, '_' + 8*i + 'm');
@@ -134,11 +120,9 @@ BasicGame.Game.prototype = {
             BasicGame.highText.fontSize = 50;
             BasicGame.highText.padding.set(10, 16);
          }
-
     },
 
     update: function () {
-
         //  Reset the players velocity (movement)
         player.body.velocity.x = 0;
         // Bounding-Box settings
@@ -194,7 +178,6 @@ BasicGame.Game.prototype = {
         }
 
         // Fallschirm oeffnen sobald Ground sichtbar ist
-
         if (cursors.up.isDown && player.body.y >= this.world.height-600 && BasicGame.playerAlive == true)
         {
             player.body.velocity.y = 180;
@@ -241,7 +224,6 @@ BasicGame.Game.prototype = {
             BasicGame.score = 0;
         }
         BasicGame.text.text = 'Level: ' + BasicGame.level + '      Sterne: ' + BasicGame.score + '      Leben: ' + BasicGame.lifes;
-
     },
 
     collideBird: function (player, bird) 
@@ -287,12 +269,7 @@ BasicGame.Game.prototype = {
         if (BasicGame.newLevel == true) {
             BasicGame.level += 1;
         } 
-        //  Here you should destroy anything you no longer need.
-        //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
-
         //  Then let's go back to the main menu.
         this.state.start('MainMenu');
-
     }
-
 };

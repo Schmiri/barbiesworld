@@ -1,7 +1,6 @@
 BasicGame.Tutorial = function (game) {
 
     //  When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
-
     this.game;      //  a reference to the currently running game (Phaser.Game)
     this.add;       //  used to add sprites, text, groups, etc (Phaser.GameObjectFactory)
     this.camera;    //  a reference to the game camera (Phaser.Camera)
@@ -18,18 +17,10 @@ BasicGame.Tutorial = function (game) {
     this.particles; //  the particle manager (Phaser.Particles)
     this.physics;   //  the physics manager (Phaser.Physics)
     this.rnd;       //  the repeatable random number generator (Phaser.RandomDataGenerator)
-
-
-
-
 };
 
 BasicGame.Tutorial.prototype = {
-
     create: function () {
-
-        
-
         this.world.setBounds(0 ,0, 1024, BasicGame.worldHeight);
 
         //set background and ground
@@ -102,14 +93,10 @@ BasicGame.Tutorial.prototype = {
 
         //  Our controls.
         cursors = this.input.keyboard.createCursorKeys();
-
-
     },
 
     createText: function () {
-
         BasicGame.text = this.add.text(15,20, 'Tutorial');
-
         BasicGame.text.font = 'Loved by the King';
         BasicGame.text.fontSize = 30;
         BasicGame.text.padding.set(10, 16);
@@ -129,8 +116,6 @@ BasicGame.Tutorial.prototype = {
         BasicGame.tutorialText.fontSize = 23;
         BasicGame.tutorialText.padding.set(2, 2);
         BasicGame.tutorialText.fixedToCamera = true;
-
-
     },
 
     update: function () {
@@ -283,12 +268,7 @@ BasicGame.Tutorial.prototype = {
     },
 
     quitGame: function () {
-        //  Here you should destroy anything you no longer need.
-        //  Stop music, delete sprites, purge caches, free resources, all that good stuff.
-
         //  Then let's go back to the main menu.
         this.state.start('MainMenu');
-
     }
-
 };

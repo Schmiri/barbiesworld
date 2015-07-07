@@ -1,7 +1,6 @@
 var BasicGame = {};
 
 BasicGame.Boot = function (game) {
-
         var player; 
         var heli;
         var clouds;
@@ -9,7 +8,6 @@ BasicGame.Boot = function (game) {
         var stars;  
         var cursors;
         var started;
-
         var high;
         var worldHeight;
         var meter;        
@@ -32,13 +30,11 @@ BasicGame.Boot = function (game) {
         var birdGravity;
         var gameOver;
         var tutorialText;
-
 };
 
 BasicGame.Boot.prototype = {
 
     init: function () {
-
         //  Unless you specifically know your game needs to support multi-touch I would recommend setting this to 1
         this.input.maxPointers = 1;
 
@@ -59,21 +55,10 @@ BasicGame.Boot.prototype = {
             this.scale.forceLandscape = true;
             this.scale.pageAlignHorizontally = true;
         }
-
-    },
-
-    preload: function () {
-
-        //  Here we load the assets required for our preloader (in this case a background and a loading bar)
-        //this.load.image('preloaderBackground', 'assets/preloader_background.png');
-        //.load.image('preloaderBar', 'assets/preloadr_bar.png');
-
     },
 
     create: function () {
-
         WebFontConfig = {
-
             //  'active' means all requested fonts have finished loading
             //  We set a 1 second delay before calling 'createText'.
             //  For some reason if we don't the browser cannot render the text the first time it's created.
@@ -109,11 +94,7 @@ BasicGame.Boot.prototype = {
         BasicGame.gameOver;
         BasicGame.tutorialText;
 
-
-        //  By this point the preloader assets have loaded to the cache, we've set the game settings
         //  So now let's start the real preloader going
         this.state.start('Preloader');
-
     }
-
 };
