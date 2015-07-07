@@ -36,10 +36,10 @@ BasicGame.MainMenu.prototype = {
 		//this.add.sprite(0, 0, 'titlepage');
 
 
-		this.playButton = this.add.button(320, 190, 'playButton', this.startGame, this);
-		this.reloadButton = this.add.button(320, 190, 'reloadButton', this.reloadGame, this);
-		this.nextButton = this.add.button(320, 190, 'nextButton', this.nextGame, this);
-		this.tutorialButton = this.add.button(320, 320, 'tutorialButton', this.tutorial, this);
+		this.playButton = this.add.button(320, 220, 'playButton', this.startGame, this);
+		this.reloadButton = this.add.button(320, 220, 'reloadButton', this.reloadGame, this);
+		this.nextButton = this.add.button(320, 220, 'nextButton', this.nextGame, this);
+		this.tutorialButton = this.add.button(320, 350, 'tutorialButton', this.tutorial, this);
 		this.playButton.visible = false;
 		this.reloadButton.visible = false;
 		this.nextButton.visible = false; 
@@ -72,7 +72,7 @@ BasicGame.MainMenu.prototype = {
 			this.reloadButton.kill();
 			this.nextButton.kill();
 			this.playButton = this.add.button(320, 190, 'playButton', this.startGame, this);
-			this.tutorialButton = this.add.button(320, 320, 'tutorialButton', this.tutorial, this);
+			this.tutorialButton = this.add.button(320, 350, 'tutorialButton', this.tutorial, this);
 
 		}
 
@@ -90,13 +90,13 @@ BasicGame.MainMenu.prototype = {
 	        	this.playButton.visible = false;
 	        	this.tutorialButton.visible = false;
 	        	this.reloadButton.visible = true;
-	        	this.playButton = this.add.button(320, 320, 'playButton', this.startGame, this);
+	        	this.playButton = this.add.button(320, 350, 'playButton', this.startGame, this);
 	        } 
 	        else if (BasicGame.newLevel == true) {
 	        	this.playButton.visible = false;
 	        	this.tutorialButton.visible = false;
 				this.nextButton.visible = true;
-	        	this.playButton = this.add.button(320, 320, 'playButton', this.startGame, this);
+	        	this.playButton = this.add.button(320, 350, 'playButton', this.startGame, this);
 	        }
         }
  
