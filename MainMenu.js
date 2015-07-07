@@ -71,7 +71,7 @@ BasicGame.MainMenu.prototype = {
 			this.playButton.visible = false;
 			this.reloadButton.kill();
 			this.nextButton.kill();
-			this.playButton = this.add.button(320, 190, 'playButton', this.startGame, this);
+			this.playButton = this.add.button(320, 220, 'playButton', this.startGame, this);
 			this.tutorialButton = this.add.button(320, 350, 'tutorialButton', this.tutorial, this);
 
 		}
@@ -90,7 +90,7 @@ BasicGame.MainMenu.prototype = {
 	        	this.playButton.visible = false;
 	        	this.tutorialButton.visible = false;
 	        	this.reloadButton.visible = true;
-	        	this.playButton = this.add.button(320, 350, 'playButton', this.startGame, this);
+	        	this.playButton = this.add.button(320, 400, 'playButton', this.startGame, this);
 	        } 
 	        else if (BasicGame.newLevel == true) {
 	        	this.playButton.visible = false;
@@ -153,7 +153,13 @@ BasicGame.MainMenu.prototype = {
         BasicGame.high = BasicGame.high;
         BasicGame.highText = BasicGame.highText;
          //	And start the actual game
-		this.state.start('Game');
+		this.state.start('Game', null, true);
+		this.headline.visible = false;
+		clouds.visible = false;
+		this.playButton.visible = false;
+		this.reloadButton.visible = false;
+		this.nextButton.visible = false; 
+		this.tutorialButton.visible = false;
 
 	},
 
